@@ -2,13 +2,19 @@ import java.util.ArrayList;
 
 public class Ship extends Object{
 	
-	protected int speed, range, attack, health, torpedoesLeft;
+	protected int speed, range, attack, health, torpedoesLeft, cost;
 	protected Location location;
 	protected boolean hasRailGun, hasTorpedoes;
+	protected Player owner;
 	
 	public Ship(Location location)
 	{
 		this.location = location;
+	}
+	
+	public Ship ()
+	{
+		
 	}
 	public void useAbility()
 	{
@@ -47,6 +53,11 @@ public class Ship extends Object{
 		{
 			target.setHealth(health -= 10);
 		}
+	}
+	
+	public void setOwner(Player owner)
+	{
+		this.owner = owner;
 	}
 	public void fireTorpedo (Location targetLocation) //this means if the ship moves the torpedo will not know and still go to the location
 	{

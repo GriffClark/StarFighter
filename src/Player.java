@@ -1,15 +1,20 @@
 import java.util.ArrayList;
 public class Player {
 	
-	protected ArrayList<Ship> ships = new ArrayList<Ship>();
 	protected String name;
 	protected boolean isTurn;
-	protected double coins;
+	protected int coins;
+	protected Fleet fleet;
 	
 	public Player(String name)
 	{
 		this.name = name;
 		coins = 50;
+//		fleet = new Fleet(/*me*/);
+	}
+	public void createFleet(Player player)
+	{
+		this.fleet = new Fleet(player);
 	}
 	
 	public boolean getIsTurn()
@@ -30,9 +35,25 @@ public class Player {
 		return name;
 	}
 	
-	public void addShip (Ship ship)
+	public Fleet getFleet()
 	{
-		ships.add(ship);
+		return fleet;
 	}
+	
+	public void setCoins (int coins)
+	{
+		this.coins = coins;
+	}
+	
+	public int getCoins()
+	{
+		return coins;
+	}
+	
+	public void spendCoins(int spent)
+	{
+		this.coins -= spent;
+	}
+	
 
 }
