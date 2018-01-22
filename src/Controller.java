@@ -2,117 +2,64 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class Controller {
 
-	
-	public static double getDistance(Location a, Location b) //@TODO make this a double
+	public static Location generateRandomLocation(int x, int y) {
+		int randomX = (int)(Math.random() * x);
+		int randomY = (int)(Math.random() * y);
+		return new Location(randomX,randomY);
+	}
+	public static int getDistance(Location a, Location b) //@TODO make this a double
 	{
-		double dis;
+		int dis;
 		int x1 = a.getX();
 		int y1 = a.getY();
 		int x2 = b.getX();
 		int y2 = b.getY();
 		
-		dis=Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+		dis=(int)(Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)));
 		
 		return dis;
 		 
 	}
-	public static Location aquireIntercept(Location targetLocation, int speed, Location myLocation)
+	public static Location aquireNearestIntercept(Location targetLocation, int speed, Location myLocation)
 	{
-		int numberOfTries = 0;
-		while(true) //will loop until it finds a valid location
-		{
-			Location testLocation = Controller.generateValidLocation(myLocation, speed);
-			if(Controller.getDistance(targetLocation, testLocation) < 2)
-			{
-				if(Controller.getDistance(targetLocation, myLocation)<= speed )
-				{
-					return testLocation;
-				}
-				else {
-					numberOfTries++;
-				}
-			}
-			else
-			{
-				numberOfTries++;
-			}
-			if(numberOfTries > 20)
-			{
-				return myLocation; //prevents an infinite loop, give up and stay where you are.
-			}
-		}
+		//figures out which move gets you closest to the target but still one away. Not sure how to logic this
+		int randomX = (int)(Math.random() * /*times the max?*/); //and then what else
+		//same for y
 		
+		//make a location with the x and y
+		//return that location
 	}
-	public static ArrayList<Ship> getShips()
-	{
-		return Model.getGameModel().getShips();
-	}
-	public static Location generateValidLocation (Location location, int speed)
-	{
-		ArrayList<Ship> ships = new ArrayList<Ship>();
-		int numShips = Controller.getShips().size();
-		for(int i = 0; i < numShips; i++)
-		{
-			ships.add( Controller.getShips().get(i));
-		}
-		Location finalLocation = null;
-		int xRange = (location.getX() + speed) - (location.getX() - speed) + 1;
-		int yRange = (location.getY() + speed) - (location.getY() - speed) +1;
-		int tries = 0;
-		while(finalLocation == null || tries < 100)
-		{
-			tries ++;
-			//should also put something in here to make sure the same locations don't get tested over and over
-			int randomX = (int)((Math.random() * xRange) + (location.getX() - speed));
-			int randomY = (int)((Math.random() * yRange) + (location.getY()  -speed));
-			Location testLocation = new Location(randomX, randomY );
-			boolean isTestLocationValid = true;
-			
-			for(int i = 0; i < ships.size(); i++)
-			{
-				if(testLocation == ships.get(i).getLocation())
-				{
-					isTestLocationValid = false;
-				}
-				
-			}
-			if(isTestLocationValid == true)
-			{
-				finalLocation = testLocation;
-			}
-			
-		}
-		return finalLocation;
-	}
+
 	/*TODO
 	 * build a scan method that will give you all ships with a radius away from a certain location
+	 * Make it so that when ship is attacked it takes less damage for each health it has
 	 */
 	public static void initPlayers()
 
 	{
+		
 		System.out.println("start player init");
 		Scanner s = new Scanner(System.in);
 		System.out.println("input player one name:");
 		String input = s.nextLine();
-		player1=new Player(input);
-		player1.createFleet(player1);
+		Model.getGameModel().player1=new Player(input);
+		Model.getGameModel().player1.createFleet(Model.getGameModel().player1);
 		System.out.println("enter unique name for player 2");
 		boolean complete = false;
 		while(complete == false)
 		{
 			input = s.nextLine();
-			if(!(input.equals(player1.getName())))
+			if(!(input.equals(Model.getGameModel().player1.getName())))
 			{
-				player2 = new Player(input);
+				Model.getGameModel().player2 = new Player(input);
 				
 				complete = true;
 			}
 		}
-		player2.createFleet(player2);
+		Model.getGameModel().player2.createFleet(Model.getGameModel().player2);
 
-		System.out.println("Player 1 is " + player1.getName() + " and player 2 is " + player2.getName());
-		players[0] = player1;
-		players[1] = player2;
+		System.out.println("Player 1 is " + Model.getGameModel().player1.getName() + " and player 2 is " + Model.getGameModel().player2.getName());
+
 		
 	}
 	public static void addShip(Player player)
@@ -133,6 +80,7 @@ public class Controller {
 			newShip.setAttack(number);
 			newShip.setHealth(number * 2);
 			newShip.setSpeed((number/3) + 1);
+			newShip.setRange(newShip.getSpeed() + 1);
 		}
 		else
 		{
@@ -148,7 +96,7 @@ public class Controller {
 	}
 	public static void initShips()
 	{
-		if(player1 == null || player2 == null)
+		if(Model.getGameModel().player1 == null || Model.getGameModel().player2 == null)
 		{
 			System.out.println("attempt to init ships on null players" );
 		}
@@ -158,25 +106,46 @@ public class Controller {
 			//some of this should be seperated out into its own method
 			System.out.println("For testing each player will get only two ships");
 			System.out.println("time to select ships. Player 1 will choose first");
-			while(player1.fleet.ships.size() <2)
+			while(Model.getGameModel().player1.fleet.ships.size() <2)
 			{
-				addShip(player1);
+				//uses addShip method from Controller
+				addShip(Model.getGameModel().player1);
 			}
 			System.out.println("time for Player 2");
-			while(player2.fleet.ships.size() <2)
+			while(Model.getGameModel().player2.fleet.ships.size() <2)
 			{
-				addShip(player2);
+				addShip(Model.getGameModel().player2);
 			}
 			
 			
 			
 		}
 	}
+		
 	public static void main(String[] args)
 	{
 		initPlayers();
 		initShips();
+		for(int i = 0; i < 3; i++) {
+			Port p = new Port();
+			p.setName("Port " + i);
+			p.setLocation(Controller.generateRandomLocation(Model.getGameModel().getGrid().length, Model.getGameModel().getGrid()[0].length)); //it's a mouthful should I shorten it?
+			Model.getGameModel().addPort(p);
+		}
 		
+		//at this point everything should be initialized
+		int turnsTaken = 0;
+		while(Model.getGameModel().player1.getFleet().ships.size() > 0 && Model.getGameModel().player2.getFleet().ships.size() > 0 ) {
+			if(turnsTaken % 2 == 0)
+			{
+				//player 1 turn
+			}
+			else {
+				//player 2 turn
+			}
+			turnsTaken++;
+		}
+		//turns are over go to end phase
 		
 	}
 

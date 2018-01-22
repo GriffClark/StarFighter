@@ -4,19 +4,27 @@ public class Object {
 	protected int speed;
 	protected String name;
 	protected Location location;
+	protected boolean isShrouded;
 	
-	public void move(Location target, int speed)
-	{
-		//moves as close to target as it can
-		if(target.getEmpty() == true)
+	public void move(Location target, Object o){
+		Object[][] grid = Model.getGameModel().getGrid();		
+		if(grid[target.getX()][target.getY()] == null && Controller.getDistance(target, o.getLocation()) <= o.getSpeed())
 		{
 			location = target;
-			//this is incorrect. Use the scan method in controller that needs to be built
+		}
+		else {
+			System.out.println("invalid move attempy by " + o.getName());
 		}
 	}
-	
+
 	public int getSpeed() {
 		return speed;
+	}
+	public void setLoation(Location location){
+		this.location = location;
+	}
+	public Location getLocation() {
+		return location;
 	}
 	public void setSpeed(int speed) {
 		this.speed = speed;
@@ -27,6 +35,13 @@ public class Object {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public boolean getIsShrouded()
+	{
+		return isShrouded;
+	}
+	public void setIsShrouded(boolean isShrouded)
+	{
+		this.isShrouded = isShrouded;
+	}
 
 }

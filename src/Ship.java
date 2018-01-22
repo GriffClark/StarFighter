@@ -3,9 +3,9 @@ import java.util.ArrayList;
 public class Ship extends Object{
 	
 	protected int speed, range, attack, health, torpedoesLeft, cost;
-	protected Location location;
 	protected boolean hasRailGun, hasTorpedoes;
 	protected Player owner;
+	protected ArrayList<Object> thingsNearBy = new ArrayList<Object>();
 	
 	public Ship(Location location)
 	{
@@ -20,10 +20,6 @@ public class Ship extends Object{
 	{
 		
 	}
-	public Location getLocation()
-	{
-		return location;
-	}
 	public int getHealth() {
 		return health;
 	}
@@ -36,16 +32,26 @@ public class Ship extends Object{
 	public void setAttack(int attack) {
 		this.attack = attack;
 	}
-
 	public int getRange() {
 		return range;
 	}
 	public void setRange(int range) {
 		this.range = range;
 	}
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setOwner(Player owner)
+	{
+		this.owner = owner;
 	}
+	public Player getOwner()
+	{
+		return owner;
+	}
+
+	public void scan()
+	{
+		
+	}
+	
 	public void fireRailGun(Ship target)
 	{
 		//targets a ship you see
@@ -55,10 +61,7 @@ public class Ship extends Object{
 		}
 	}
 	
-	public void setOwner(Player owner)
-	{
-		this.owner = owner;
-	}
+
 	public void fireTorpedo (Location targetLocation) //this means if the ship moves the torpedo will not know and still go to the location
 	{
 		if(hasTorpedoes == true && torpedoesLeft >= 1)

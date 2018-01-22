@@ -1,15 +1,30 @@
 import java.util.ArrayList;
 public class Model {
 	
-	private Player player1;
-	private Player player2;
-	private Player[] players = new Player[2];
+	public  Player player1;
+	public Player player2;
 	private ArrayList<Object> liveOrdanince= new ArrayList<Object>(); //stores things like torpedoes and mines
+	private ArrayList<Port> ports = new ArrayList<Port>();
+	private Object[][] grid = new Object[30][10];
+	
+	public Object[][] getGrid()
+	{
+		return grid;
+	}
 	
 	
 	private Model()
 	{
 		
+	}
+	
+	public void addPort(Port port) {
+		Model.getGameModel().ports.add(port);
+	}
+	
+	public ArrayList<Port> getPorts()
+	{
+		return Model.getGameModel().ports;
 	}
 	
 	public void setPlayer(int whichPlayer, String name)
@@ -24,9 +39,11 @@ public class Model {
 		}
 		else
 		{
-			System.out.println("! Invalid whichPlayer for Model.setPlayers()");
+			System.out.println("! Invalid setPlayer for Model.setPlayers()");
 		}
 	}
+	
+
 	
 	private static Model privateModel = null;
 	
@@ -35,6 +52,7 @@ public class Model {
 	      if (privateModel == null)
 	      {
 	        privateModel = new Model();
+	      
 	      }
 	      
 	      return Model.privateModel; //refrencing static SingletonGameModel

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-
+/* TODO
+ * build scan method
+ */
 public class Fleet {
 	
 	protected ArrayList<Ship> ships = new ArrayList<Ship>();
