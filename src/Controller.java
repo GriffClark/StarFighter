@@ -1,10 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Controller {
-	public static Player player1;
-	public static Player player2;
-	public static Player[] players = new Player[2];
-	public static ArrayList<Object> liveOrdanince= new ArrayList<Object>(); //stores things like torpedoes and mines
+
 	
 	public static double getDistance(Location a, Location b) //@TODO make this a double
 	{
