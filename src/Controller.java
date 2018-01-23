@@ -20,6 +20,10 @@ public class Controller {
 		return dis;
 		 
 	}
+	
+	public static ArrayList<Object> scan(){
+		
+	}
 	public static Location aquireNearestIntercept(Location targetLocation, int speed, Location myLocation)
 	{
 		//figures out which move gets you closest to the target but still one away. Not sure how to logic this
