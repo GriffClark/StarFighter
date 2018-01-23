@@ -1,13 +1,18 @@
+import java.util.ArrayList;
 
 public class Weapon {
 
 	protected Ship owner;
-	protected int ammo;
+	protected int ammo, damage;
 	protected boolean loaded;
 	String name;
 	
 	public Weapon(Ship owner) {
 		this.owner = owner;
+	}
+	
+	public int getDamage() {
+		return damage;
 	}
 	
 	public boolean canFire() {
@@ -48,6 +53,22 @@ public class Weapon {
 
 	public void special(Ship target) {
 		//if the weapon has special abilities
+	}
+	
+	public int fire(Ship target) {
+		if (canFire() == true) {
+			special(target);
+			return damage;
+		}
+		else {
+			return 0;
+		}
+		
+	}
+
+	public void special(Ship target, ArrayList<Object> thingsNearBy) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -7,7 +7,7 @@ public class Controller {
 		int randomY = (int)(Math.random() * y);
 		return new Location(randomX,randomY);
 	}
-	public static int getDistance(Location a, Location b) //@TODO make this a double
+	public static int getDistance(Location a, Location b) 
 	{
 		int dis;
 		int x1 = a.getX();
@@ -33,6 +33,7 @@ public class Controller {
 	/*TODO
 	 * build a scan method that will give you all ships with a radius away from a certain location
 	 * Make it so that when ship is attacked it takes less damage for each health it has
+	 * Make a scan method that takes a point as a radius and returns every point <x away (so a circle) takes an int returns an ArrayList<Object>
 	 */
 	public static void initPlayers()
 
