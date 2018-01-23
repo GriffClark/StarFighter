@@ -8,21 +8,19 @@ public class RocketWeapon extends Weapon {
 	}
 	
 	@Override 
-	public int fire(Ship target) {
+	public void fire(Ship target) {
+		int initialDistance = Controller.getDistance(owner.getLocation(), target.getLocation());
+		int distanceToTravel = initialDistance;
+		if(distanceToTravel <= speed) {
+			target.takeDamage(attack);
+			special(target);
+		}
 		//build some sort of suspend method becuase rockets travel at a certian speed
 	}
 	
 	@Override
-	public void special (Ship target, ArrayList<Object> thingsNearBy) {
-		for(int i = 0; i < thingsNearBy.size(); i++) {
-			//by doing it this way it only hits things that ship can see. Would be better if I did it 1 around the object
-			if(Controller.getDistance(target.getLocation(), thingsNearBy.get(i).getLocation()) <2) {
-				Ship maybe;
-				if(thingsNearBy.get(i)./*is a ship*/) {
-					//deal 1/2 damage to everything nearby
-				}
-			}
-		}
+	public void special (Ship target) {
+		//how do I make it so that it explodes on all the things nearby?
 	}
 
 }

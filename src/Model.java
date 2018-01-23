@@ -3,10 +3,60 @@ public class Model {
 	
 	public  Player player1;
 	public Player player2;
-	private ArrayList<Object> liveOrdanince= new ArrayList<Object>(); //stores things like torpedoes and mines
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	private Object[][] grid = new Object[30][10];
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	
+	public Player getPlayer1() {
+		return player1;
+	}
+
+
+	public void setPlayer1(Player player1) {
+		this.player1 = player1;
+	}
+
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+
+	public void setPlayer2(Player player2) {
+		this.player2 = player2;
+	}
+
+
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
+	}
+
+
+	public void setProjectiles(ArrayList<Projectile> projectiles) {
+		this.projectiles = projectiles;
+	}
+
+
+	public static Model getPrivateModel() {
+		return privateModel;
+	}
+
+
+	public static void setPrivateModel(Model privateModel) {
+		Model.privateModel = privateModel;
+	}
+
+
+	public void setPorts(ArrayList<Port> ports) {
+		this.ports = ports;
+	}
+
+
+	public void setGrid(Object[][] grid) {
+		this.grid = grid;
+	}
+
+
 	public Object[][] getGrid()
 	{
 		return grid;

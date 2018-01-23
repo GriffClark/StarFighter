@@ -5,7 +5,7 @@ public class RailGun extends EMWeapon{
 		super(owner);
 		name = "Rail Gun";
 		attack = 12 + ((1/10) * attack);
-		range = 10;
+		range = owner.getRange() * 3 - 1;
 		requiredCharge = 3;
 		ammo = 6;
 		

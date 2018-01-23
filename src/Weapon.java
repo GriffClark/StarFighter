@@ -3,16 +3,17 @@ import java.util.ArrayList;
 public class Weapon {
 
 	protected Ship owner;
-	protected int ammo, damage;
+	protected int ammo, attack, range;
 	protected boolean loaded;
 	String name;
 	
 	public Weapon(Ship owner) {
 		this.owner = owner;
+		range = owner.getRange();
 	}
 	
-	public int getDamage() {
-		return damage;
+	public int getAttack() {
+		return attack;
 	}
 	
 	public boolean canFire() {
@@ -55,14 +56,12 @@ public class Weapon {
 		//if the weapon has special abilities
 	}
 	
-	public int fire(Ship target) {
-		if (canFire() == true) {
+	public void fire(Ship target) {
+		if (canFire() == true && Controller.getDistance(owner.getLocation(), target.getLocation()) <= range) {
 			special(target);
-			return damage;
+			target.takeDamage(attack);
 		}
-		else {
-			return 0;
-		}
+
 		
 	}
 
