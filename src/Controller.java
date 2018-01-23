@@ -70,7 +70,7 @@ public class Controller {
 		System.out.println("Time to build a ship. Which features would you like? Avalabe features are:\n'rail gun' [10] or 'torpedoes'[5]");
 		Ship newShip = new Ship();
 		String input = keyboard.nextLine();
-		if(input.equals("rail gun") && player.getCoins() >= 10) {newShip.hasRailGun = true;}
+		if(input.equals("rail gun") && player.getCoins() >= 10) {new RailGun(newShip);} //should give newShip a railGun
 		else if (input.equals("torpedoes") && player.getCoins() >= 5){newShip.hasTorpedoes = true;}
 		else {System.out.println("no feature selected or you did not have enough coins");}
 		System.out.println("input the number of points you want in your ship. For testing this will auto generate ship");

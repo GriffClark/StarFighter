@@ -9,16 +9,24 @@ public class EMWeapon extends Weapon{
 	}
 	
 	@Override
+	public boolean canFire() {
+		if(ammo>0 && loaded == true && charge >=3) {
+			ammo--;
+			charge -= 3;
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public void reLoad() {
+		charge++;
 		if(charge >= requiredCharge) {
-			isCharged = true;
+			isCharged = true;	
 		}
-		else {
-			charge++;
-		}
-		
 		if(loaded == false) {
 			loaded = true;
+			ammo--;
 		}
 	}
 	
@@ -44,18 +52,6 @@ public class EMWeapon extends Weapon{
 
 	public void setCharged(boolean isCharged) {
 		this.isCharged = isCharged;
-	}
-
-	@Override
-	public void fire(Ship target) {
-		
-		if(isCharged == true && loaded == true && ammo > 0 && Controller.getDistance(target.getLocation(), owner.getLocation()) <= range) {
-			special(target);
-			target.setHealth(target.getHealth() - attack);
-			ammo--;
-		}
-		else{System.out.println("no ammo");}
-		
 	}
 	
 }

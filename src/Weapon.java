@@ -2,7 +2,7 @@
 public class Weapon {
 
 	protected Ship owner;
-	protected int ammo, range, attack;
+	protected int ammo;
 	protected boolean loaded;
 	String name;
 	
@@ -10,14 +10,12 @@ public class Weapon {
 		this.owner = owner;
 	}
 	
-	public void fire(Ship target) // is there a way to do it without needing my location passed in?
-	{
-		if(loaded == true && ammo > 0 && Controller.getDistance(target.getLocation(), owner.getLocation()) <= range) {
-			special(target);
-			target.setHealth(target.getHealth() - attack);
+	public boolean canFire() {
+		if(ammo>0 && loaded == true) {
 			ammo--;
+			return true;
 		}
-		else{System.out.println("no ammo");}
+		return false;
 	}
 	
 	public void reLoad() {
@@ -38,22 +36,6 @@ public class Weapon {
 
 	public void setAmmo(int ammo) {
 		this.ammo = ammo;
-	}
-
-	public int getRange() {
-		return range;
-	}
-
-	public void setRange(int range) {
-		this.range = range;
-	}
-
-	public int getAttack() {
-		return attack;
-	}
-
-	public void setAttack(int attack) {
-		this.attack = attack;
 	}
 
 	public boolean isLoaded() {
