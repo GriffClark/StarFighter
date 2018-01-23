@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Ship extends Object{
 	
 	protected int speed, range, attack, health, torpedoesLeft, cost;
-	protected boolean hasRailGun, hasTorpedoes;
+	protected Debuff debuff;
 	protected Player owner;
 	protected ArrayList<Object> thingsNearBy = new ArrayList<Object>();
 	
@@ -47,29 +47,11 @@ public class Ship extends Object{
 		return owner;
 	}
 
+	//TODO build scan method
 	public void scan()
 	{
 		
 	}
 	
-	public void fireRailGun(Ship target)
-	{
-		//targets a ship you see
-		if(hasRailGun == true && Controller.getDistance(target.getLocation(), location) <= 10)
-		{
-			target.setHealth(health -= 10);
-		}
-	}
 	
-
-	public void fireTorpedo (Location targetLocation) //this means if the ship moves the torpedo will not know and still go to the location
-	{
-		if(hasTorpedoes == true && torpedoesLeft >= 1)
-		{
-			torpedoesLeft--;
-			Torpedo torpedo = new Torpedo(/*place torpedo one away from ship*/, targetLocation);
-			torpedo.move(targetLocation);
-			
-		}
-	}
 }
