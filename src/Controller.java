@@ -42,6 +42,7 @@ public class Controller {
 	}
 	
 	public static ArrayList<Object> scan(Location center, int radius){
+		//TODO scan won't work. Need to check by rows or by columns this just gives you a diagonal line that's been checked
 		if(center.getX() <= Model.getGameModel().getGrid().length && center.getY() <= Model.getGameModel().getGrid()[0].length) {
 		
 			ArrayList<Object> things = new ArrayList<Object>();
