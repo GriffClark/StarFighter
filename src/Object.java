@@ -23,6 +23,10 @@ public class Object {
 	public void setLoation(Location location){
 		this.location = location;
 	}
+	
+	public void setLocation(int x, int y) {
+		this.location = new Location(x,y);
+	}
 	public Location getLocation() {
 		return location;
 	}

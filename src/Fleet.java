@@ -49,5 +49,13 @@ public class Fleet {
 		}
 		return localShips;
 	}
+	
+	public String toString(){
+		String r = "";
+		for(int i = 0; i < ships.size(); i++) {
+			r += ships.get(i).getName() + " at location " + ships.get(i).getLocation().toString();
+		}
+		return r;
+	}
 
 }

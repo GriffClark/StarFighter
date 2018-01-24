@@ -175,6 +175,15 @@ public class Controller {
 			
 		}
 	}
+	
+	public static Location moveTowards(Location target, Location myLocation) {
+		/*TODO finish this method
+		 * figure out where you are
+		 * scan the spots around you
+		 * find the spot that has the smallest getDistance to target
+		 * return that location
+		 */
+	}
 	public static void initShipsDefault() {
 		/*
 		 * randomly generates ships
@@ -195,8 +204,11 @@ public class Controller {
 			if(featureMaker % 2 == 0) {
 				ship.weapons.add(new RailGun(ship));
 			}
-			
+			int yValue = (int)(Math.random() * Model.getGameModel().getGrid()[0].length);
+			ship.setLocation(0, yValue);
 			Model.getGameModel().player1.fleet.addShip(ship);
+			yValue = (int)(Math.random() * Model.getGameModel().getGrid()[0].length);
+			ship.setLocation(Model.getGameModel().getGrid().length -1, yValue); 
 			Model.getGameModel().player2.fleet.addShip(ship);	
 			shipsAdded++;
 		}
