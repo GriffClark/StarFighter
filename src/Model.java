@@ -1,11 +1,28 @@
 import java.util.ArrayList;
 public class Model {
 	
-	public  Player player1;
-	public Player player2;
+	public  Player player1, player2;
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	private Object[][] grid = new Object[30][10];
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	private ArrayList<String> features = new ArrayList<String>();
+	
+	public void addFeature(String feature) {
+		features.add(feature);
+	}
+	
+	public boolean findFeature(String feature) {
+		for(int i = 0; i < features.size(); i++) {
+			if(features.equals(feature)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public ArrayList<String> getFeatures(){
+		return features;
+	}
 	
 	public Player getPlayer1() {
 		return player1;

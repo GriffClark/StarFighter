@@ -4,6 +4,7 @@ public class TorpedoLauncher extends Weapon{
 	public TorpedoLauncher(Ship owner) {
 		super(owner);
 		ammo = 4;
+		name = "Torpedo Launcher";
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ public class RocketWeapon extends Weapon {
 
 	public RocketWeapon(Ship owner) {
 		super(owner);
+		name = "Rocket Weapon";
 	}
 	
 	@Override 

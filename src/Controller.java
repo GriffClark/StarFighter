@@ -3,9 +3,29 @@ import java.util.Scanner;
 public class Controller {
 
 	public static Location generateRandomLocation(int x, int y) {
-		int randomX = (int)(Math.random() * x);
-		int randomY = (int)(Math.random() * y);
-		return new Location(randomX,randomY);
+		while(true) {
+			int randomX = (int)(Math.random() * x);
+			int randomY = (int)(Math.random() * y);
+			
+			boolean good = true;
+			
+			for(int i = 0; i < Model.getGameModel().player1.getFleet().ships.size(); i++) {
+				if(Model.getGameModel().player1.getFleet().ships.get(i).getLocation() == new Location(randomX, randomY)) {
+					good = false;
+				}
+			}
+			
+			for(int i = 0; i < Model.getGameModel().player2.getFleet().ships.size(); i++) {
+				if(Model.getGameModel().player2.getFleet().ships.get(i).getLocation() == new Location(randomX, randomY)) {
+					good = false;
+				}
+			}
+			
+			if(good = true) {
+				return new Location(randomX,randomY);
+			}
+		}
+		
 	}
 	public static int getDistance(Location a, Location b) 
 	{
@@ -21,7 +41,41 @@ public class Controller {
 		 
 	}
 	
-	public static ArrayList<Object> scan(){
+	public static ArrayList<Object> scan(Location center, int radius){
+		if(center.getX() <= Model.getGameModel().getGrid().length && center.getY() <= Model.getGameModel().getGrid()[0].length) {
+		
+			ArrayList<Object> things = new ArrayList<Object>();
+			
+			int[] possibleX = new int[radius * 2];
+			int[] possibleY = new int[radius*2];
+			int x = center.getX() - radius;
+			int y = center.getY() - radius;
+			
+			
+			for(int i = 0; i < radius * 2; i++) {
+				possibleX[i] = x;
+				x++;
+				possibleY[i] = y;
+				y++;
+				//should loop through to get all x and y values in range and add them to possibleX and possibleY
+				
+			}
+			
+			for(int i = 0; i < possibleX.length; i++) {
+				for(int j = 0; j < possibleY.length; j++) {
+					if(Model.getGameModel().getGrid()[i][j] != null) {
+						things.add(Model.getGameModel().getGrid()[i][j]);
+					}
+				}
+				
+			}
+			return things;
+		}		
+		else {
+			System.out.println("invalid search at " + center.toString());
+			return null;
+		}
+		
 		
 	}
 	public static Location aquireNearestIntercept(Location targetLocation, int speed, Location myLocation)
@@ -34,11 +88,6 @@ public class Controller {
 		//return that location
 	}
 
-	/*TODO
-	 * build a scan method that will give you all ships with a radius away from a certain location
-	 * Make it so that when ship is attacked it takes less damage for each health it has
-	 * Make a scan method that takes a point as a radius and returns every point <x away (so a circle) takes an int returns an ArrayList<Object>
-	 */
 	public static void initPlayers()
 
 	{
@@ -99,7 +148,7 @@ public class Controller {
 		player.spendCoins(number);
 		player.fleet.addShip(newShip);
 	}
-	public static void initShips()
+	public static void initShipsCustom()
 	{
 		if(Model.getGameModel().player1 == null || Model.getGameModel().player2 == null)
 		{
@@ -126,33 +175,77 @@ public class Controller {
 			
 		}
 	}
+	public static void initShipsDefault() {
+		/*
+		 * randomly generates ships
+		 * ignores coins because both players get random ships
+		 * auto places ships for you
+		 */
+		int shipsToAdd = 5;
+		int shipsAdded = 0;
+		while(shipsAdded < shipsToAdd) {
+			Ship ship = new Ship();
+			int featureMaker = (int)(Math.random() * 10);
+			ship.setAttack((int)(Math.random() * 50));
+			ship.setHealth((int)(Math.random() * 100) + ship.getAttack());
+			ship.setSpeed((int)(Math.random() * 10) + 1);
+			ship.setName("Ship " + shipsAdded);
+			
+			ship.weapons.add(new PDC(ship));
+			if(featureMaker % 2 == 0) {
+				ship.weapons.add(new RailGun(ship));
+			}
+			
+			Model.getGameModel().player1.fleet.addShip(ship);
+			Model.getGameModel().player2.fleet.addShip(ship);	
+			shipsAdded++;
+		}
+		System.out.println("done init ships. Each player has the following:");
+		for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
+			Model.getGameModel().player1.fleet.ships.get(i).ls();
+			System.out.println();
+		}
 		
+	}
 	public static void main(String[] args)
 	{
+		Model.getGameModel().addFeature("Rail Gun");
+		Model.getGameModel().addFeature("PDC");
+		Model.getGameModel().addFeature("Ports");
 		initPlayers();
-		initShips();
-		for(int i = 0; i < 3; i++) {
-			Port p = new Port();
-			p.setName("Port " + i);
-			p.setLocation(Controller.generateRandomLocation(Model.getGameModel().getGrid().length, Model.getGameModel().getGrid()[0].length)); //it's a mouthful should I shorten it?
-			Model.getGameModel().addPort(p);
+		initShipsDefault();
+		if(Model.getGameModel().findFeature("Ports") == true) {
+
+			for(int i = 0; i < 3; i++) {
+				Port p = new Port();
+				p.setName("Port " + i);
+				p.setLocation(Controller.generateRandomLocation(Model.getGameModel().getGrid().length, Model.getGameModel().getGrid()[0].length)); //it's a mouthful should I shorten it?
+				Model.getGameModel().addPort(p);
+			}
 		}
 		
 		//at this point everything should be initialized
 		int turnsTaken = 0;
+		
 		while(Model.getGameModel().player1.getFleet().ships.size() > 0 && Model.getGameModel().player2.getFleet().ships.size() > 0 ) {
 			if(turnsTaken % 2 == 0)
 			{
-				//player 1 turn
+				System.out.println("player 1 turn");
 			}
 			else {
-				//player 2 turn
+				System.out.println("player 2 turn");
 				
 			}
 			turnsTaken++;
+			
+			//debug
+			if(turnsTaken > 10) {
+				break;
+			}
 		}
 		//turns are over go to end phase
 		
+	
 	}
 
 }

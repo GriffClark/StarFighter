@@ -4,8 +4,8 @@ public class Object {
 	protected int speed;
 	protected String name;
 	protected Location location;
-	protected boolean isShrouded;
-	
+		protected boolean isShrouded; //stealth and shit
+
 	public void move(Location target, Object o){
 		Object[][] grid = Model.getGameModel().getGrid();		
 		if(grid[target.getX()][target.getY()] == null && Controller.getDistance(target, o.getLocation()) <= o.getSpeed())

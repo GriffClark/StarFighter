@@ -6,6 +6,8 @@ public class Ship extends Object{
 	protected Debuff debuff;
 	protected Player owner;
 	protected ArrayList<Object> thingsNearBy = new ArrayList<Object>();
+	ArrayList<Location> validLocations = new ArrayList<Location>();
+
 	ArrayList<Weapon> weapons = new ArrayList<Weapon>();
 	
 	
@@ -14,6 +16,54 @@ public class Ship extends Object{
 		this.location = location;
 	}
 	
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+	public int getTorpedoesLeft() {
+		return torpedoesLeft;
+	}
+
+	public void setTorpedoesLeft(int torpedoesLeft) {
+		this.torpedoesLeft = torpedoesLeft;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	public Debuff getDebuff() {
+		return debuff;
+	}
+
+	public void setDebuff(Debuff debuff) {
+		this.debuff = debuff;
+	}
+
+	public ArrayList<Object> getThingsNearBy() {
+		return thingsNearBy;
+	}
+
+	public void setThingsNearBy(ArrayList<Object> thingsNearBy) {
+		this.thingsNearBy = thingsNearBy;
+	}
+
+	public ArrayList<Weapon> getWeapons() {
+		return weapons;
+	}
+
+	public void setWeapons(ArrayList<Weapon> weapons) {
+		this.weapons = weapons;
+	}
+
 	public Ship ()
 	{
 		
@@ -66,26 +116,54 @@ public class Ship extends Object{
 		return owner;
 	}
 
-	//TODO build scan method
 	public void scan()
 	{
-		//scans first for all of player 1's things, then for all of player 2's things
-		//adds all nearby things to your arrayList, friend or fo. or should I have it see if it is owned by the same player to not add it?
-		
-		for(int i = 0 ; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-			Location testLocation = Model.getGameModel().player1.fleet.ships.get(i).getLocation();
-			if(Controller.getDistance(testLocation, location) <= range *2) {
-				thingsNearBy.add(Model.getGameModel().player1.fleet.ships.get(i));
-			}
+		thingsNearBy = Controller.scan(location, range * 2);
+	}
+	
+	public void ls() {
+		System.out.println(name + " owned by: " + owner.getName() + " \nattack: " + attack + "\thealth: " + health + "\tspeed: " + speed + "\nweapons:");
+		for(int i = 0; i < weapons.size(); i++) {
+			System.out.print(weapons.get(i).name + " // ");
 		}
-		
-		for(int i = 0 ; i < Model.getGameModel().player2.fleet.ships.size(); i++) {
-			Location testLocation = Model.getGameModel().player2.fleet.ships.get(i).getLocation();
-			if(Controller.getDistance(testLocation, location) <= range *2) {
-				thingsNearBy.add(Model.getGameModel().player1.fleet.ships.get(i));
+		System.out.println();
+	}
+	//TODO below method getLocations doesn't work because data is not stored in Model.grid like I am trying to reference. Need a better but equally fast way to see if there is someone at that spot
+	public void getLocations() {
+			if(location.getX() <= Model.getGameModel().getGrid().length && location.getY() <= Model.getGameModel().getGrid()[0].length) {	
+				validLocations = new ArrayList<Location>(); //should clear it
+				int[] possibleX = new int[speed * 2];
+				int[] possibleY = new int[speed*2];
+				int x = location.getX() - speed;
+				int y = location.getY() - speed;
+				for(int i = 0; i < speed * 2; i++) {
+					possibleX[i] = x;
+					x++;
+					possibleY[i] = y;
+					y++;
+					//should loop through to get all x and y values in range and add them to possibleX and possibleY
+				}
+				for(int i = 0; i < possibleX.length; i++) {
+					for(int j = 0; j < possibleY.length; j++) {
+						if(Model.getGameModel().getGrid()[i][j] == null && new Location(i,j) != location) { //cause you don't want your own location, right?
+							validLocations.add(new Location(i, j));
+						}
+					}
+				}
+			}		
+	}
+	
+	public void move(Location target) {
+		for(int i = 0; i < validLocations.size(); i++) {
+			if(validLocations.get(i) == target) {
+				location = validLocations.get(i);
+				scan(); //goes through by known objects
+				getLocations(); //goes through by nearby locations
+				break;
 			}
 		}
 	}
+	
 	
 	
 }
