@@ -4,7 +4,7 @@ public class Player {
 	protected String name;
 	protected boolean isTurn;
 	protected int coins;
-	protected Fleet fleet;
+	protected Fleet fleet; //why can this be accessed as if this is public
 	
 	public Player(String name)
 	{

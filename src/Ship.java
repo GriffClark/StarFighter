@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Ship extends Object{
 	
+	//TODO build hasMoved and hasAttacked booleans with checks and resets
 	protected int speed, range, attack, health, torpedoesLeft, cost;
 	protected Debuff debuff;
 	protected Player owner;
@@ -118,8 +119,38 @@ public class Ship extends Object{
 
 	public void scan()
 	{
-		thingsNearBy = Controller.scan(location, range * 2);
+		if(location.getX() <= Model.getGameModel().getGrid().length && location.getY() <= Model.getGameModel().getGrid()[0].length) {			
+			int xMin = location.getX() - speed;
+			int xMax = location.getX() + speed;
+			int yMin = location.getY() - speed;
+			int yMax = location.getY() + speed;
+			
+			//following if statements should make sure that no locations will check out of bounds
+			
+			if(xMin < 0) {
+				xMin = 0;
+			}
+			if(yMin < 0) {
+				yMin = 0;
+			}
+			if(xMax > Model.getGameModel().getGrid().length) {
+				xMax = Model.getGameModel().getGrid().length;
+			}
+			if(yMax > Model.getGameModel().getGrid().length) {
+				yMax = Model.getGameModel().getGrid().length;
+			}
+			//go through list of objects and see if any of them have matching locations
+			for(int i = xMin; i < xMax; i++) {
+				for(int j = yMin; j < yMax; j++) {
+					//FIXME method is unfinished
+					//if you are player 1 search player 2's things
+					//otherwise search player 1's things
+				}
+			}
 	}
+		
+	}
+		
 	
 	public void ls() {
 		System.out.println(name + " owned by: " + owner.getName() + " \nattack: " + attack + "\thealth: " + health + "\tspeed: " + speed + "\nweapons:");
@@ -128,7 +159,7 @@ public class Ship extends Object{
 		}
 		System.out.println();
 	}
-	//TODO below method getLocations doesn't work because data is not stored in Model.grid like I am trying to reference. Need a better but equally fast way to see if there is someone at that spot
+	//FIXME below method getLocations doesn't work because data is not stored in Model.grid like I am trying to reference. Need a better but equally fast way to see if there is someone at that spot
 	public void getLocations() {
 			if(location.getX() <= Model.getGameModel().getGrid().length && location.getY() <= Model.getGameModel().getGrid()[0].length) {	
 				validLocations = new ArrayList<Location>(); //should clear it

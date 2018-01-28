@@ -41,43 +41,63 @@ public class Controller {
 		 
 	}
 	
-	public static ArrayList<Object> scan(Location center, int radius){
-		//TODO scan won't work. Need to check by rows or by columns this just gives you a diagonal line that's been checked
-		if(center.getX() <= Model.getGameModel().getGrid().length && center.getY() <= Model.getGameModel().getGrid()[0].length) {
-		
-			ArrayList<Object> things = new ArrayList<Object>();
+	public static ArrayList<Location> scanLocations(Location center, int radius){
+		ArrayList<Location> locations = new ArrayList<Location>();
+
+		if(center.getX() <= Model.getGameModel().getGrid().length && center.getY() <= Model.getGameModel().getGrid()[0].length) {			
+			int xMin = center.getX() - radius;
+			int xMax = center.getX() + radius;
+			int yMin = center.getY() - radius;
+			int yMax = center.getY() + radius;
 			
-			int[] possibleX = new int[radius * 2];
-			int[] possibleY = new int[radius*2];
-			int x = center.getX() - radius;
-			int y = center.getY() - radius;
+			//following if statements should make sure that no locations will check out of bounds
 			
-			
-			for(int i = 0; i < radius * 2; i++) {
-				possibleX[i] = x;
-				x++;
-				possibleY[i] = y;
-				y++;
-				//should loop through to get all x and y values in range and add them to possibleX and possibleY
-				
+			if(xMin < 0) {
+				xMin = 0;
 			}
-			
-			for(int i = 0; i < possibleX.length; i++) {
-				for(int j = 0; j < possibleY.length; j++) {
-					if(Model.getGameModel().getGrid()[i][j] != null) {
-						things.add(Model.getGameModel().getGrid()[i][j]);
+			if(yMin < 0) {
+				yMin = 0;
+			}
+			if(xMax > Model.getGameModel().getGrid().length) {
+				xMax = Model.getGameModel().getGrid().length;
+			}
+			if(yMax > Model.getGameModel().getGrid().length) {
+				yMax = Model.getGameModel().getGrid().length;
+			}
+			//go through list of objects and see if any of them have matching locations
+			for(int i = xMin; i < xMax; i++) {
+				for(int j = yMin; j < yMax; j++) {
+					locations.add(new Location(i,j));
+				}
+			}
+			int locationSize = locations.size();
+			for(int j = 0; j < Model.getGameModel().player1.fleet.ships.size(); j++) {
+				for(int i = 0; i < locationSize; i++) {
+					if(Model.getGameModel().player1.fleet.getShip(j).getLocation() == locations.get(i)) {
+						locations.remove(i);
+						break;
+						//after a location has been moved I don't need to check any other locations
+					}
+				}
+			}
+			locationSize = locations.size();
+			for(int j = 0; j < Model.getGameModel().player2.fleet.ships.size(); j++) {
+				for(int i = 0; i < locationSize; i++) {
+					if(Model.getGameModel().player2.fleet.getShip(j).getLocation() == locations.get(i)) {
+						locations.remove(i);
+						break;
+						//after a location has been moved I don't need to check any other locations
 					}
 				}
 				
 			}
-			return things;
-		}		
-		else {
-			System.out.println("invalid search at " + center.toString());
-			return null;
+			return locations; //why is this not resolving?
+			
+		} //end if statement
+		else{
+		System.out.println("invalid location search");
+		return null;
 		}
-		
-		
 	}
 	public static Location aquireNearestIntercept(Location targetLocation, int speed, Location myLocation)
 	{
@@ -176,14 +196,18 @@ public class Controller {
 			
 		}
 	}
-	
-	public static Location moveTowards(Location target, Location myLocation) {
-		/*TODO finish this method
-		 * figure out where you are
-		 * scan the spots around you
-		 * find the spot that has the smallest getDistance to target
-		 * return that location
-		 */
+	public static void makeAMove(Ship ship, Location target) {
+		ship.move(Controller.moveTowards(target, ship.getLocation(), ship.getSpeed()));
+	}
+	public static Location moveTowards(Location target, Location myLocation, int speed) {
+		Location possibleReturn = null;
+		for(int i = 0; i < Controller.scanLocations(myLocation, speed).size(); i++) {
+			if(possibleReturn == null || Controller.getDistance(myLocation, possibleReturn) > Controller.getDistance(myLocation, Controller.scanLocations(myLocation, speed).get(i))) {
+				possibleReturn = Controller.scanLocations(myLocation, speed).get(i);
+				//for each location in scanLocation, if there is no possibleReturn or the location just gotten has less distance to target that possibleReturn, possibleReturn = location being checked
+			}
+		}
+		return possibleReturn;
 	}
 	public static void initShipsDefault() {
 		/*

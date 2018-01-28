@@ -1,4 +1,4 @@
-//TODO should projectiles have a limited amount of fuel before they explode?
+//XXX should projectiles have a limited amount of fuel before they explode?
 public class Projectile extends Object{
 	
 	protected int damage, speed;
