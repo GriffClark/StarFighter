@@ -3,14 +3,18 @@ public class Player {
 	
 	protected String name;
 	protected boolean isTurn;
-	protected int coins;
+	protected int coins, iD;
 	protected Fleet fleet; //why can this be accessed as if this is public
 	
-	public Player(String name)
+	public Player(String name, int iD)
 	{
 		this.name = name;
 		coins = 50;
-//		fleet = new Fleet(/*me*/);
+		this.iD = iD; //will be 1 for player 1 and 2 for player 2 hard-coded in controller
+	}
+	
+	public int getID() {
+		return iD;
 	}
 	public void createFleet(Player player)
 	{

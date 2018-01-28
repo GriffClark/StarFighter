@@ -6,7 +6,7 @@ public class TestScenarioOne {
 		Scanner s = new Scanner(System.in);
 		System.out.println("here are your ships");
 			for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-				System.out.println(Model.getGameModel().player1.getFleet().getShip(i).toString());
+				System.out.println(Model.getGameModel().player1.getFleet().getShip(i).getName());
 			}
 			System.out.println("select a ship you would like to move by typing it's name");
 			String input = s.nextLine();
@@ -15,6 +15,7 @@ public class TestScenarioOne {
 					Model.getGameModel().player1.fleet.ships.get(i).move(target);
 				}
 			}
+			//FIXME this methos is backwards you should be passing in a ship and then selecting the location you wante to move to
 	}
 	
 	public static void attackTarget() {
@@ -33,7 +34,7 @@ public class TestScenarioOne {
 			}
 			
 			System.out.println("here are the ships that " + myShip.getName() + " has on it's radar");
-			myShip.scan();
+			myShip.scan(myShip.getOwner());
 			for(int i = 0 ; i < myShip.getThingsNearBy().size(); i++) {
 				System.out.println(myShip.getThingsNearBy().get(i).toString());
 				//this might also print ordinance but whatever I don't care rn
@@ -68,18 +69,24 @@ public class TestScenarioOne {
 		while(Model.getGameModel().player1.getFleet().ships.size() > 0 && Model.getGameModel().player2.getFleet().ships.size() > 0 ) {
 			if(turnsTaken % 2 == 0)
 			{
+				
 				System.out.println("player 1 turn");
+				for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
+					Model.getGameModel().player1.fleet.ships.get(i).setHasAttacked(false);
+					Model.getGameModel().player1.fleet.ships.get(i).setHasMoved(false);
+				}
 				System.out.println("Your ships are: " + Model.getGameModel().player1.fleet.toString());
 				Scanner s = new Scanner(System.in);
 				System.out.println("would you like to 'move a ship', 'make an attack' or 'end'");
 				String input = s.nextLine();
 				switch(input) {
-					case "move a ship": System.out.println("enter 'x''y'");
+					case "move a ship": //FIXME move so that you select the ship and pass it into the method. Also make it so hasMoved = false
+						System.out.println("enter 'x''y'");
 						int x = s.nextInt();
 						int y = s.nextInt();
 						moveAShip(new Location(x,y)); //you select the ship that you want to use while in the method. This should probalby be it's own selectAShip method
 					case "make an attack":
-						attackTargetShip(); //this can also move ship
+						attackTarget(); //this can also move ship 
 						
 				
 				}

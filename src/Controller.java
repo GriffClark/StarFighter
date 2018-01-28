@@ -99,15 +99,6 @@ public class Controller {
 		return null;
 		}
 	}
-	public static Location aquireNearestIntercept(Location targetLocation, int speed, Location myLocation)
-	{
-		//figures out which move gets you closest to the target but still one away. Not sure how to logic this
-		int randomX = (int)(Math.random() * /*times the max?*/); //and then what else
-		//same for y
-		
-		//make a location with the x and y
-		//return that location
-	}
 
 	public static void initPlayers()
 
@@ -117,7 +108,7 @@ public class Controller {
 		Scanner s = new Scanner(System.in);
 		System.out.println("input player one name:");
 		String input = s.nextLine();
-		Model.getGameModel().player1=new Player(input);
+		Model.getGameModel().player1=new Player(input, 1);
 		Model.getGameModel().player1.createFleet(Model.getGameModel().player1);
 		System.out.println("enter unique name for player 2");
 		boolean complete = false;
@@ -126,7 +117,7 @@ public class Controller {
 			input = s.nextLine();
 			if(!(input.equals(Model.getGameModel().player1.getName())))
 			{
-				Model.getGameModel().player2 = new Player(input);
+				Model.getGameModel().player2 = new Player(input, 2);
 				
 				complete = true;
 			}
@@ -146,7 +137,7 @@ public class Controller {
 		Ship newShip = new Ship();
 		String input = keyboard.nextLine();
 		if(input.equals("rail gun") && player.getCoins() >= 10) {new RailGun(newShip);} //should give newShip a railGun
-		else if (input.equals("torpedoes") && player.getCoins() >= 5){newShip.hasTorpedoes = true;}
+		else if (input.equals("torpedoes") && player.getCoins() >= 5){newShip.hasTorpedoes = true;} //TODO this is outdated
 		else {System.out.println("no feature selected or you did not have enough coins");}
 		System.out.println("input the number of points you want in your ship. For testing this will auto generate ship");
 		int number = keyboard.nextInt();

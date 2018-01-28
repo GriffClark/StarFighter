@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Weapon {
 
 	protected Ship owner;
-	protected int ammo, attack, range;
+	protected int ammo, attack, range, uID; //FIXME make each weapon have a unique identifier so that they can be easily referenced from the command line 
 	protected boolean loaded;
 	String name;
 	
@@ -66,7 +66,7 @@ public class Weapon {
 	}
 
 	public void special(Ship target, ArrayList<Object> thingsNearBy) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

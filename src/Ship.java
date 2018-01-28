@@ -2,12 +2,36 @@ import java.util.ArrayList;
 
 public class Ship extends Object{
 	
-	//TODO build hasMoved and hasAttacked booleans with checks and resets
 	protected int speed, range, attack, health, torpedoesLeft, cost;
 	protected Debuff debuff;
 	protected Player owner;
 	protected ArrayList<Object> thingsNearBy = new ArrayList<Object>();
-	ArrayList<Location> validLocations = new ArrayList<Location>();
+	protected ArrayList<Location> validLocations = new ArrayList<Location>();
+	protected boolean hasMoved, hasAttacked;
+
+	public ArrayList<Location> getValidLocations() {
+		return validLocations;
+	}
+
+	public void setValidLocations(ArrayList<Location> validLocations) {
+		this.validLocations = validLocations;
+	}
+
+	public boolean isHasMoved() {
+		return hasMoved;
+	}
+
+	public void setHasMoved(boolean hasMoved) {
+		this.hasMoved = hasMoved;
+	}
+
+	public boolean isHasAttacked() {
+		return hasAttacked;
+	}
+
+	public void setHasAttacked(boolean hasAttacked) {
+		this.hasAttacked = hasAttacked;
+	}
 
 	ArrayList<Weapon> weapons = new ArrayList<Weapon>();
 	
@@ -117,38 +141,17 @@ public class Ship extends Object{
 		return owner;
 	}
 
-	public void scan()
+	public void scan(Player getScanned)
 	{
-		if(location.getX() <= Model.getGameModel().getGrid().length && location.getY() <= Model.getGameModel().getGrid()[0].length) {			
-			int xMin = location.getX() - speed;
-			int xMax = location.getX() + speed;
-			int yMin = location.getY() - speed;
-			int yMax = location.getY() + speed;
-			
-			//following if statements should make sure that no locations will check out of bounds
-			
-			if(xMin < 0) {
-				xMin = 0;
-			}
-			if(yMin < 0) {
-				yMin = 0;
-			}
-			if(xMax > Model.getGameModel().getGrid().length) {
-				xMax = Model.getGameModel().getGrid().length;
-			}
-			if(yMax > Model.getGameModel().getGrid().length) {
-				yMax = Model.getGameModel().getGrid().length;
-			}
-			//go through list of objects and see if any of them have matching locations
-			for(int i = xMin; i < xMax; i++) {
-				for(int j = yMin; j < yMax; j++) {
-					//FIXME method is unfinished
-					//if you are player 1 search player 2's things
-					//otherwise search player 1's things
+		if(location.getX() <= Model.getGameModel().getGrid().length && location.getY() <= Model.getGameModel().getGrid()[0].length) { //makes sure you are on the grid			
+			//loops through all the enemies ships and if they are in sight of your ship add it to thingsNearBy
+			for(int i = 0; i < getScanned.fleet.ships.size(); i++) {
+				Ship question = getScanned.fleet.ships.get(i);
+				if(Controller.getDistance(question.getLocation(), location) <= speed * 2) {
+							thingsNearBy.add(question);
 				}
 			}
-	}
-		
+		}
 	}
 		
 	
@@ -159,36 +162,24 @@ public class Ship extends Object{
 		}
 		System.out.println();
 	}
-	//FIXME below method getLocations doesn't work because data is not stored in Model.grid like I am trying to reference. Need a better but equally fast way to see if there is someone at that spot
 	public void getLocations() {
-			if(location.getX() <= Model.getGameModel().getGrid().length && location.getY() <= Model.getGameModel().getGrid()[0].length) {	
-				validLocations = new ArrayList<Location>(); //should clear it
-				int[] possibleX = new int[speed * 2];
-				int[] possibleY = new int[speed*2];
-				int x = location.getX() - speed;
-				int y = location.getY() - speed;
-				for(int i = 0; i < speed * 2; i++) {
-					possibleX[i] = x;
-					x++;
-					possibleY[i] = y;
-					y++;
-					//should loop through to get all x and y values in range and add them to possibleX and possibleY
-				}
-				for(int i = 0; i < possibleX.length; i++) {
-					for(int j = 0; j < possibleY.length; j++) {
-						if(Model.getGameModel().getGrid()[i][j] == null && new Location(i,j) != location) { //cause you don't want your own location, right?
-							validLocations.add(new Location(i, j));
-						}
-					}
-				}
-			}		
+		validLocations = new ArrayList<Location>();
+		for(int i = 0; i < Controller.scanLocations(location, speed).size(); i++) {
+			validLocations.add(Controller.scanLocations(location, speed).get(i));		}
 	}
 	
 	public void move(Location target) {
 		for(int i = 0; i < validLocations.size(); i++) {
 			if(validLocations.get(i) == target) {
 				location = validLocations.get(i);
-				scan(); //goes through by known objects
+				if(owner.getID() == 1) {
+					scan(Model.getGameModel().player2);
+				}
+				//for now these IDs are hard-coded because I have no better way of doing it
+				else if(owner.getID() == 2) {
+					scan(Model.getGameModel().player1);
+				}
+				 //goes through by known objects
 				getLocations(); //goes through by nearby locations
 				break;
 			}
