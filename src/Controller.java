@@ -182,12 +182,28 @@ public class Controller {
 			{
 				addShip(Model.getGameModel().player2);
 			}
-			
-			
-			
+
 		}
 	}
 	public static void makeAMove(Ship ship, Location target) {
+		boolean isEmpty = true;
+		if(Controller.getDistance(ship.getLocation(), target)<= ship.getSpeed()) {
+			for(int i = 0; i < Model.getGameModel().player1.getFleet().ships.size(); i++) {
+				if(Model.getGameModel().player1.getFleet().getShip(i).getLocation() == target) {
+					isEmpty = false;
+					//TODO write a getShip method in player to circumvent getFleet() to condense things
+				}
+				for(i = 0; i < Model.getGameModel().player2.getFleet().ships.size(); i++) {
+					if(Model.getGameModel().player2.getFleet().getShip(i).getLocation() == target) {
+						isEmpty = false;
+						//TODO write a getShip method in player to circumvent getFleet() to condense things
+					}
+				}
+				
+				if(isEmpty == true) {
+					ship.setLoation(target);
+				}
+		}
 		ship.move(Controller.moveTowards(target, ship.getLocation(), ship.getSpeed()));
 	}
 	public static Location moveTowards(Location target, Location myLocation, int speed) {

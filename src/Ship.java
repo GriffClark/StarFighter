@@ -3,11 +3,13 @@ import java.util.ArrayList;
 public class Ship extends Object{
 	
 	protected int speed, range, attack, health, torpedoesLeft, cost;
-	protected Debuff debuff;
+	protected Debuff debuff; //TODO make this do things
 	protected Player owner;
 	protected ArrayList<Object> thingsNearBy = new ArrayList<Object>();
 	protected ArrayList<Location> validLocations = new ArrayList<Location>();
 	protected boolean hasMoved, hasAttacked;
+	protected ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+
 
 	public ArrayList<Location> getValidLocations() {
 		return validLocations;
@@ -31,10 +33,7 @@ public class Ship extends Object{
 
 	public void setHasAttacked(boolean hasAttacked) {
 		this.hasAttacked = hasAttacked;
-	}
-
-	ArrayList<Weapon> weapons = new ArrayList<Weapon>();
-	
+	}	
 	
 	public Ship(Location location)
 	{

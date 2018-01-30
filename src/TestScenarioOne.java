@@ -2,22 +2,6 @@ import java.util.Scanner;
 //TODO need a way to figure out when the turn is done either by running out of things to do or by choice
 public class TestScenarioOne {
 	
-	public static void moveAShip(Location target) {
-		Scanner s = new Scanner(System.in);
-		System.out.println("here are your ships");
-			for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-				System.out.println(Model.getGameModel().player1.getFleet().getShip(i).getName());
-			}
-			System.out.println("select a ship you would like to move by typing it's name");
-			String input = s.nextLine();
-			for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-				if(Model.getGameModel().player1.fleet.ships.get(i).getName().equals(input)) {
-					Model.getGameModel().player1.fleet.ships.get(i).move(target);
-				}
-			}
-			//FIXME this methos is backwards you should be passing in a ship and then selecting the location you wante to move to
-	}
-	
 	public static void attackTarget() {
 		Ship myShip = null;
 		Scanner s = new Scanner(System.in);
@@ -80,11 +64,21 @@ public class TestScenarioOne {
 				System.out.println("would you like to 'move a ship', 'make an attack' or 'end'");
 				String input = s.nextLine();
 				switch(input) {
-					case "move a ship": //FIXME move so that you select the ship and pass it into the method. Also make it so hasMoved = false
-						System.out.println("enter 'x''y'");
-						int x = s.nextInt();
-						int y = s.nextInt();
-						moveAShip(new Location(x,y)); //you select the ship that you want to use while in the method. This should probalby be it's own selectAShip method
+					case "move a ship": 
+						System.out.println("which ship would you like to move?");
+						input = s.nextLine();
+						for(int i = 0; i < Model.getGameModel().player1.getFleet().ships.size(); i++) {
+							if(Model.getGameModel().player1.getFleet().ships.get(i).getName().equals(input)) {
+								System.out.println("Where would you like ot move it?");
+								System.out.println("'x''y'");
+								int inX = s.nextInt();
+								int inY = s.nextInt();
+								Controller.makeAMove(Model.getGameModel().player1.getFleet().getShip(i), new Location(inX,inY));
+								break;
+							}
+						}
+						System.out.println("Move has been made");
+						
 					case "make an attack":
 						attackTarget(); //this can also move ship 
 						

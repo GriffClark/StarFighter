@@ -4,6 +4,34 @@ public class Weapon {
 
 	protected Ship owner;
 	protected int ammo, attack, range, uID; //FIXME make each weapon have a unique identifier so that they can be easily referenced from the command line 
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public int getuID() {
+		return uID;
+	}
+
+	public void setuID(int uID) {
+		this.uID = uID;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
 	protected boolean loaded;
 	String name;
 	
