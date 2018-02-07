@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Ship extends Object{
 	
 	protected int speed, range, attack, health, torpedoesLeft, cost;
-	protected Debuff debuff; //TODO make this do things
+	protected Debuff debuff; //TODO make this do thing
 	protected Player owner;
 	protected ArrayList<Object> thingsNearBy = new ArrayList<Object>();
 	protected ArrayList<Location> validLocations = new ArrayList<Location>();

@@ -3,47 +3,7 @@ import java.util.Scanner;
 public class TestScenarioOne {
 	
 	public static void attackTarget() {
-		Ship myShip = null;
-		Scanner s = new Scanner(System.in);
-		System.out.println("here are your ships");
-			for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-				System.out.println(Model.getGameModel().player1.getFleet().getShip(i).toString());
-			}
-			System.out.println("select a ship you would like to attack with by typing it's name");
-			String input = s.nextLine();
-			for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-				if(Model.getGameModel().player1.fleet.ships.get(i).getName().equals(input)) {
-					myShip = Model.getGameModel().player1.fleet.ships.get(i);
-				}
-			}
-			
-			System.out.println("here are the ships that " + myShip.getName() + " has on it's radar");
-			myShip.scan(myShip.getOwner());
-			for(int i = 0 ; i < myShip.getThingsNearBy().size(); i++) {
-				System.out.println(myShip.getThingsNearBy().get(i).toString());
-				//this might also print ordinance but whatever I don't care rn
-			}
-			
-			System.out.println("here are your weapons");
-			for(int i = 0; i < myShip.weapons.size(); i++) {
-				System.out.println(myShip.weapons.get(i).toString());
-			}
-			
-			System.out.println("enter the name of a ship you would like to attack with " + myShip.getName());
-			input = s.nextLine();
-			for(int i = 0 ; i < myShip.getThingsNearBy().size(); i++) {
-				if(input.equals(myShip.thingsNearBy.get(i).getName())) {
-					//TODO finish attack method
-					/*
-					 * select your weapon
-					 * check if it target is in range of the weapon
-					 * see if you need to move to be in range of the target
-					 * if you need to move, move
-					 * otherwise make an attack with that weapon on target
-					 */
-				}
-			}
-			
+		
 	}
 //TODO make a test scenario here where you control a auto generate ship with all features and can move it around and fire on other ships that don't move
 	public static void main(String[] args) {
@@ -55,11 +15,11 @@ public class TestScenarioOne {
 			{
 				
 				System.out.println("player 1 turn");
-				for(int i = 0; i < Model.getGameModel().player1.fleet.ships.size(); i++) {
-					Model.getGameModel().player1.fleet.ships.get(i).setHasAttacked(false);
-					Model.getGameModel().player1.fleet.ships.get(i).setHasMoved(false);
+				for(int i = 0; i < Model.getGameModel().player1.getFleet().ships.size(); i++) {
+					Model.getGameModel().player1.getFleet().ships.get(i).setHasAttacked(false);
+					Model.getGameModel().player1.getFleet().ships.get(i).setHasMoved(false);
 				}
-				System.out.println("Your ships are: " + Model.getGameModel().player1.fleet.toString());
+				System.out.println("Your ships are: " + Model.getGameModel().player1.getFleet().toString());
 				Scanner s = new Scanner(System.in);
 				System.out.println("would you like to 'move a ship', 'make an attack' or 'end'");
 				String input = s.nextLine();
@@ -80,15 +40,40 @@ public class TestScenarioOne {
 						System.out.println("Move has been made");
 						
 					case "make an attack":
-						attackTarget(); //this can also move ship 
-						
-				
+						Ship placeHolder = null;
+						System.out.println("Select a ship you would like to attack with");
+						for(int i = 0; i < Model.getGameModel().player1.getFleet().ships.size(); i++) {
+							Model.getGameModel().player1.getFleet().ships.get(i).ls();
+							placeHolder = Model.getGameModel().player1.getFleet().ships.get(i);
+						}
+						input = s.nextLine();
+						for(int i = 0; i < Model.getGameModel().player1.getFleet().ships.size(); i++) {
+							if(Model.getGameModel().player1.getFleet().ships.get(i).getName().equals(input)) {
+								System.out.println(" you chose " + Model.getGameModel().player1.getFleet().ships.get(i).getName() + " at location " + Model.getGameModel().player1.getFleet().ships.get(i).getLocation().toString());
+								System.out.println("for testing purposes, you will now attack with all weapon that is in range");
+								for(int j = 0; j < placeHolder.getThingsNearBy().size(); j++) {
+									System.out.println(placeHolder.getThingsNearBy().get(j).getName() + " @Location " + placeHolder.getThingsNearBy().get(j).getLocation().toString());
+								}
+								System.out.println("enter the name of the ship you would like to attack");
+								input = s.nextLine();
+								for(int j = 0; j < placeHolder.getThingsNearBy().size(); j++) {
+									if(placeHolder.getThingsNearBy().get(j).getName().equals(input)) {
+										for(int k = 0; k < placeHolder.getWeapons().size(); k++) {
+											placeHolder.getWeapons().get(k).fire((Ship) placeHolder.getThingsNearBy().get(j));
+											//FIXME this will error out if a non-ship is entered. Should throw my own exception just not sure what
+											break;
+											//this should break everything but not sure
+										}
+									}
+								}
+							}
+						}
 				}
 			}
 			
 			else {
 				System.out.println("enemy turn");
-				System.out.println("enemy has ships: " + Model.getGameModel().player2.fleet.toString());
+				System.out.println("enemy has ships: " + Model.getGameModel().player2.getFleet().toString());
 				System.out.println("enemy does not move in this scenario");
 			}
 			//TODO build a visual rep after all ships are moved

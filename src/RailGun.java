@@ -5,7 +5,7 @@ public class RailGun extends EMWeapon{
 		super(owner);
 		name = "Rail_Gun";
 		attack = 12 + ((1/10) * attack);
-		range = owner.getRange() * 3 - 1;
+		range = (owner.getRange() * 3) - 1;
 		requiredCharge = 3;
 		ammo = 6;
 		
@@ -13,7 +13,7 @@ public class RailGun extends EMWeapon{
 	
 	@Override
 	public void special (Ship target) {
-		
+		//should come up with a cool special
 	}
 
 }

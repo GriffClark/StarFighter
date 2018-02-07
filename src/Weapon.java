@@ -84,7 +84,7 @@ public class Weapon {
 		//if the weapon has special abilities
 	}
 	
-	public void fire(Ship target) {
+	public void dealDamage(Ship target) {
 		if (canFire() == true && Controller.getDistance(owner.getLocation(), target.getLocation()) <= range) {
 			special(target);
 			target.takeDamage(attack);
@@ -94,8 +94,16 @@ public class Weapon {
 	}
 
 	public void special(Ship target, ArrayList<Object> thingsNearBy) {
-		
-		
+	}
+	
+	public void fire(Ship target) {
+		if(canFire() == true) {
+			ammo--;
+			dealDamage(target);
+		}
+		else {
+			reLoad();
+		}
 	}
 	
 }

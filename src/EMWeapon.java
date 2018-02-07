@@ -11,8 +11,6 @@ public class EMWeapon extends Weapon{
 	@Override
 	public boolean canFire() {
 		if(ammo>0 && loaded == true && charge >=3) {
-			ammo--;
-			charge -= 3;
 			return true;
 		}
 		return false;
@@ -26,7 +24,19 @@ public class EMWeapon extends Weapon{
 		}
 		if(loaded == false) {
 			loaded = true;
+		}
+	}
+	
+	@Override
+	public void fire(Ship target) {
+		if(canFire() == true) {
 			ammo--;
+			charge -=3;
+			special(target);
+			dealDamage(target);
+		}
+		else {
+			reLoad();
 		}
 	}
 	
